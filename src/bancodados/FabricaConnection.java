@@ -16,7 +16,7 @@ public class FabricaConnection {
 
     public static Connection geConexao() {
         try {
-            final String url = "jdbc:mysql://localhost";
+            final String url = "jdbc:mysql://localhost/curso_java";
             final String usuario = "root";
             final String senha = "";
          return DriverManager.getConnection(url, usuario, senha);
