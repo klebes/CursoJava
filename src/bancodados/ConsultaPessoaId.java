@@ -22,7 +22,7 @@ public class ConsultaPessoaId {
         System.out.println("digite seu codigo de usuario:");
         int digito = teclado.nextInt();
         String sql = "SELECT codigo, nome FROM pessoa WHERE codigo = ?";
-        String update = "UPDATE pessoa SET nome = ? WHERE codigo ?";
+        String update = "UPDATE pessoa SET nome = ? WHERE codigo = ?";
 
         PreparedStatement stmt = conexao.prepareStatement(sql);
         stmt.setInt(1, digito);
