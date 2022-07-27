@@ -4,9 +4,11 @@
  */
 package bancodados;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Properties;
 
 /**
  *
@@ -16,13 +18,20 @@ public class FabricaConnection {
 
     public static Connection geConexao() {
         try {
-            final String url = "jdbc:mysql://localhost/curso_java";
-            final String usuario = "root";
-            final String senha = "";
+            Properties prop = getProperties();
+            final String url = prop.getProperty("banco.url");
+            final String usuario = prop.getProperty("usuario.url");
+            final String senha = prop.getProperty("senha.url");
          return DriverManager.getConnection(url, usuario, senha);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+    }
+    private static Properties getProperties() throws IOException{
+        Properties prop = new Properties();
+        String caminho = "/conexao.properties";
+        prop.load(FabricaConnection.class.getResourceAsStream(caminho));
+        return prop;
     }
 }
