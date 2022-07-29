@@ -1,0 +1,57 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package bancodados;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ *
+ * @author KDS
+ */
+public class Dao {
+    private Connection conexao;
+    public int incluir(String sql, Object...atributos){
+        try {
+            PreparedStatement stmt = getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            adicionarAtributos(stmt, atributos);
+            if(stmt.executeUpdate()> 0){
+                ResultSet resultado = stmt.getGeneratedKeys();
+                if(resultado.next()){
+                    return resultado.getInt(1);
+                }
+            }
+            return -1;
+        } 
+        
+        catch (Exception e) {
+            throw  new RuntimeException(e);            
+        }
+    }
+    public void adicionarAtributos(PreparedStatement stmt, Object[] atributos) throws SQLException{
+        int indice = 1;
+        for(Object atributo : atributos){
+            if (atributo instanceof String) {
+                stmt.setString(indice, (String) atributo);
+                
+            }else if(atributo instanceof Integer){
+                stmt.setInt(indice, (Integer) atributo);
+            }
+        }
+    }
+    private Connection getConnection(){
+        try {
+             if(conexao != null && !conexao.isClosed()){
+    return conexao;
+}
+        } catch (Exception e) {
+        }
+        conexao = FabricaConnection.geConexao();
+        return conexao;
+    }
+}
